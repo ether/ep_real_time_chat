@@ -13,6 +13,15 @@ exports.postAceInit = function(hook_name, args, cb) {
       sendChat();
     }
   });
+
+  if(clientVars.realTimeChatOnByDefault){
+    $('#enableRealTimeChat').attr("checked", true);
+    $('#enableRealTimeChat').prop("check", true);
+    if(clientVars.forceRealTimeChat){
+      $('#chattext').css("top", "25px");
+      $('#enableRealTimeChat').parent().hide();
+    }
+  }
 };
 
 exports.getAuthorClassName = function(author)

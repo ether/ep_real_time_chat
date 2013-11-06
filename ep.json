@@ -3,10 +3,11 @@
     {
       "name": "real_time_chat",
       "client_hooks": {
-        "postAceInit": "ep_real_time_chat/static/js/main:postAceInit",
+        "aceInitialized": "ep_real_time_chat/static/js/main:postAceInit",
         "handleClientMessage_CUSTOM": "ep_real_time_chat/static/js/main"
       },
       "hooks": {
+        "clientVars":"ep_real_time_chat/index:clientVars",
         "handleMessage": "ep_real_time_chat/handleMessage"
       }
     }
