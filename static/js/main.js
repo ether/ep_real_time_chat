@@ -1,4 +1,10 @@
 exports.postAceInit = function(hook_name, args, cb) {
+  var urlContainsRealTimeChatTrue = (getParam("realTimeChat") == "true"); // if the url param is set
+  if(urlContainsRealTimeChatTrue){
+    clientVars.realTimeChatOnByDefault = true;
+    clientVars.forceRealTimeChat = true;
+  }
+
   // Write the settings checkbox to the UI
   $('#chattext').css("top", "45px");
   $('#titlebar').append("<span style='padding:5px;float:left;'><input type=checkbox id='enableRealTimeChat'>&nbsp;<label for=enableRealTimeChat>Send Real Time Chat Updates</label></span>");
@@ -81,4 +87,17 @@ function sendChat(){
     myAuthorId : myAuthorId
   }
   pad.collabClient.sendMessage(message);  // Send the chat position message to the server
+}
+
+function getParam(sname){
+  var params = location.search.substr(location.search.indexOf("?")+1);
+  var sval = "";
+  params = params.split("&");
+  // split param and value into individual pieces
+  for (var i=0; i<params.length; i++)
+  {
+    temp = params[i].split("=");
+    if ( [temp[0]] == sname ) { sval = temp[1]; }
+  }
+  return sval;
 }
