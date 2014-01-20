@@ -4,6 +4,11 @@ exports.postAceInit = function(hook_name, args, cb) {
     clientVars.realTimeChatOnByDefault = true;
     clientVars.forceRealTimeChat = true;
   }
+  if(getParam("realTimeChat") == "false"){
+    clientVars.realTimeChatOnByDefault = false;
+    clientVars.forceRealTimeChat = false;
+    $('#enableRealTimeChat').attr("checked", false);
+  }
 
   // Write the settings checkbox to the UI
   $('#chattext').css("top", "45px");
@@ -14,13 +19,13 @@ exports.postAceInit = function(hook_name, args, cb) {
   });
 
   // Listen for key ups in the chat input box
-  $('#chatinput').keyup(function(){
+  $('body').on("keyup", "#chatinput", function(){
     if($('#enableRealTimeChat').is(':checked')) {
       sendChat();
     }
   });
 
-  if(clientVars.realTimeChatOnByDefault){
+  if(clientVars.realTimeChatOnByDefault == true){
     $('#enableRealTimeChat').attr("checked", true);
     $('#enableRealTimeChat').prop("check", true);
     if(clientVars.forceRealTimeChat){
@@ -29,6 +34,7 @@ exports.postAceInit = function(hook_name, args, cb) {
     }
   }
 };
+
 
 exports.getAuthorClassName = function(author)
 {
