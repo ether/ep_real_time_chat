@@ -38,6 +38,7 @@ exports.postAceInit = function(hook_name, args, cb) {
 
 exports.getAuthorClassName = function(author)
 {
+  if(!author) return false;
   return "ep_real_time_chat-" + author.replace(/[^a-y0-9]/g, function(c)
   {
     if (c == ".") return "-";
@@ -52,6 +53,7 @@ exports.handleClientMessage_CUSTOM = function(hook, context, cb){
   var message = context.payload.message;
   var authorName = context.payload.authorName;
   var authorClass = exports.getAuthorClassName(authorId);
+  if(!authorClass) return;
   var authorClassCSS = authorClass.replace("ep_real_time_chat","author");
 
   if(pad.getUserId() === authorId) return false; // Dont process our own caret position (yes we do get it..) -- This is not a bug
