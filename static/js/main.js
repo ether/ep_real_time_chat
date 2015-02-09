@@ -12,7 +12,7 @@ exports.postAceInit = function(hook_name, args, cb) {
 
   // Write the settings checkbox to the UI
   $('#chattext').css("top", "45px");
-  $('#titlebar').append("<span style='width:100%;padding:5px;float:left;'><input type=checkbox id='enableRealTimeChat'>&nbsp;<label for=enableRealTimeChat>Send Real Time Chat Updates</label></span>");
+  $('#titlebar').append("<span style='width:100%;padding:5px 0px 5px 0px;float:left;'><input style='margin-left:5px' type=checkbox id='enableRealTimeChat'>&nbsp;<label for=enableRealTimeChat>Send Real Time Chat Updates</label></span>");
 
   $('#enableRealTimeChat').click(function(){
     $('#chatinput').focus();
