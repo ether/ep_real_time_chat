@@ -10,25 +10,26 @@ padMessageHandler = require("../../src/node/handler/PadMessageHandler"),
 
 var buffer = {};
 
-/* 
+/*
 * Handle incoming messages from clients
 */
-exports.handleMessage = function(hook_name, context, callback){
+exports.handleMessage = async function(hook_name, context, callback){
   // Firstly ignore any request that aren't about chat
   var ischatMessage = false;
   if(context){
     if(context.message && context.message){
       if(context.message.type === 'COLLABROOM'){
-        if(context.message.data){ 
+        if(context.message.data){
           if(context.message.data.type){
             if(context.message.data.type === 'chat'){
               ischatMessage = true;
-            } 
+            }
           }
         }
       }
     }
   }
+
   if(!ischatMessage){
     callback(false);
     return false;
@@ -44,23 +45,22 @@ exports.handleMessage = function(hook_name, context, callback){
      * myAuthorId -- The Id of the author who is trying to talk to the targetAuthorId
   ***/
   if(message.action === 'sendChatMessage'){
-    authorManager.getAuthorName(message.myAuthorId, function(er, authorName){ // Get the authorname
+    var authorName = await authorManager.getAuthorName(message.myAuthorId); // Get the authorname
 
-      var msg = {
-        type: "COLLABROOM",
-        data: { 
-          type: "CUSTOM",
-          payload: {
-            action: "recieveChatMessage",
-            authorId: message.myAuthorId,
-            authorName: authorName,
-            padId: message.padId,
-            message: message.message
-          }
+    var msg = {
+      type: "COLLABROOM",
+      data: {
+        type: "CUSTOM",
+        payload: {
+          action: "recieveChatMessage",
+          authorId: message.myAuthorId,
+          authorName: authorName,
+          padId: message.padId,
+          message: message.message
         }
-      };
-      sendToRoom(message, msg);
-    });
+      }
+    }
+    sendToRoom(message, msg);
   }
 
   if(ischatMessage === true){

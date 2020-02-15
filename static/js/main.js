@@ -77,7 +77,7 @@ exports.handleClientMessage_CUSTOM = function(hook, context, cb){
         parent.chat.scrollDown();
       }else{
         $('#authorChatMessage-'+authorClass).remove();
-      } 
+      }
     }
   }
 }
@@ -94,6 +94,7 @@ function sendChat(){
     padId : padId,
     myAuthorId : myAuthorId
   }
+  console.log("sent", message)
   pad.collabClient.sendMessage(message);  // Send the chat position message to the server
 }
 
