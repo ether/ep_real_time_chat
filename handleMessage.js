@@ -46,7 +46,7 @@ exports.handleMessage = async function(hook_name, context, callback){
   ***/
   if(message.action === 'sendChatMessage'){
     var authorName = await authorManager.getAuthorName(message.myAuthorId); // Get the authorname
-
+    if(!authorName) authorName = Anonymous;
     var msg = {
       type: "COLLABROOM",
       data: {

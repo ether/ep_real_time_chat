@@ -1,7 +1,7 @@
 {
   "name": "ep_real_time_chat",
   "description": "Real time chat updates",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "johnyma22 (John McLear) <john@mclear.co.uk>",
   "repository" : { "type" : "git", "url"  : "https://github.com/JohnMcLear/ep_real_time_chat.git" }
 }
