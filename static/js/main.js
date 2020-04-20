@@ -12,7 +12,7 @@ exports.postAceInit = function(hook_name, args, cb) {
 
   // Write the settings checkbox to the UI
   $('#chattext').css("top", "45px");
-  $("#titlelabel").after().append("&nbsp; || &nbsp;<input type=checkbox id='enableRealTimeChat'><label for=enableRealTimeChat>Real Time</label>");
+  $("#titlelabel").after().append("&nbsp; || &nbsp;<input type=checkbox id='enableRealTimeChat'><label title='Enable / Disable sending real time chat messages' for=enableRealTimeChat>Real Time</label>");
 
   $('#enableRealTimeChat').click(function(){
     $('#chatinput').focus();
