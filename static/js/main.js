@@ -12,6 +12,7 @@ exports.postAceInit = function(hook_name, args, cb) {
 
   // Write the settings checkbox to the UI
   $('#chattext').css("top", "45px");
+  if($("#enableRealTimeChat").length !== 0) return; // don't continue if we're already rendered
   $("#titlelabel").after().append("&nbsp; || &nbsp;<input type=checkbox id='enableRealTimeChat'><label title='Enable / Disable sending real time chat messages' for=enableRealTimeChat>Real Time</label>");
 
   $('#enableRealTimeChat').click(function(){
@@ -94,7 +95,6 @@ function sendChat(){
     padId : padId,
     myAuthorId : myAuthorId
   }
-  console.log("sent", message)
   pad.collabClient.sendMessage(message);  // Send the chat position message to the server
 }
 
