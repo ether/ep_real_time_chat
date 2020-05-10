@@ -66,15 +66,20 @@ exports.handleClientMessage_CUSTOM = function(hook, context, cb){
       var authorName = "Anonymous" // If the users username isn't set then display a smiley face
     }
     $('#authorChatMessage-'+authorClass).remove();
-    var html = '<p class="'+authorClassCSS+'" id="authorChatMessage-' +authorClass+ '"><b>' + authorName + '</b>: ' + message + '...</p>'
+    var chatHtml = $('<p>').attr({
+      class: authorClassCSS,
+      id: 'authorChatMessage-' + authorClass,
+    }).append(
+      $('<b>').text(authorName)
+    ).append(document.createTextNode(': ' + message + '...'))
     if( $('#authorChatMessage-'+authorClass).length === 0 ){ // if a container doesnt exist for this author yet
       if(message){
-        $('#chattext').append(html); // create new html
+        $('#chattext').append(chatHtml); // create new html
         parent.chat.scrollDown();
       }
     }else{
       if(message){
-        $('#authorChatMessage-'+authorClass).html(html); // update html value
+        $('#authorChatMessage-'+authorClass).empty().append(chatHtml); // update html value
         parent.chat.scrollDown();
       }else{
         $('#authorChatMessage-'+authorClass).remove();
