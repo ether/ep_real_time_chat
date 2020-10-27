@@ -6,5 +6,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/JohnMcLear/ep_real_time_chat.git"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "http://etherpad.org/"
   }
 }
