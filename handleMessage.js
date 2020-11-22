@@ -1,27 +1,27 @@
-/***
+/** *
 *
 * Responsible for negotiating messages between two clients
 *
 ****/
 
-var authorManager = require("../../src/node/db/AuthorManager"),
-padMessageHandler = require("../../src/node/handler/PadMessageHandler"),
-            async = require('../../src/node_modules/async');
+const authorManager = require('../../src/node/db/AuthorManager');
+const padMessageHandler = require('../../src/node/handler/PadMessageHandler');
+const async = require('../../src/node_modules/async');
 
-var buffer = {};
+const buffer = {};
 
 /*
 * Handle incoming messages from clients
 */
-exports.handleMessage = async function(hook_name, context, callback){
+exports.handleMessage = async function (hook_name, context, callback) {
   // Firstly ignore any request that aren't about chat
-  var ischatMessage = false;
-  if(context){
-    if(context.message && context.message){
-      if(context.message.type === 'COLLABROOM'){
-        if(context.message.data){
-          if(context.message.data.type){
-            if(context.message.data.type === 'chat'){
+  let ischatMessage = false;
+  if (context) {
+    if (context.message && context.message) {
+      if (context.message.type === 'COLLABROOM') {
+        if (context.message.data) {
+          if (context.message.data.type) {
+            if (context.message.data.type === 'chat') {
               ischatMessage = true;
             }
           }
@@ -30,13 +30,13 @@ exports.handleMessage = async function(hook_name, context, callback){
     }
   }
 
-  if(!ischatMessage){
+  if (!ischatMessage) {
     callback(false);
     return false;
   }
 
-  var message = context.message.data;
-  /***
+  const message = context.message.data;
+  /** *
     What's available in a message?
      * action -- The action IE chatPosition
      * padId -- The padId of the pad both authors are on
@@ -44,40 +44,40 @@ exports.handleMessage = async function(hook_name, context, callback){
      * message -- the actual message
      * myAuthorId -- The Id of the author who is trying to talk to the targetAuthorId
   ***/
-  if(message.action === 'sendChatMessage'){
-    var authorName = await authorManager.getAuthorName(message.myAuthorId); // Get the authorname
-    if(!authorName) authorName = "Anonymous";
-    var msg = {
-      type: "COLLABROOM",
+  if (message.action === 'sendChatMessage') {
+    let authorName = await authorManager.getAuthorName(message.myAuthorId); // Get the authorname
+    if (!authorName) authorName = 'Anonymous';
+    const msg = {
+      type: 'COLLABROOM',
       data: {
-        type: "CUSTOM",
+        type: 'CUSTOM',
         payload: {
-          action: "recieveChatMessage",
+          action: 'recieveChatMessage',
           authorId: message.myAuthorId,
-          authorName: authorName,
+          authorName,
           padId: message.padId,
-          message: message.message
-        }
-      }
-    }
+          message: message.message,
+        },
+      },
+    };
     sendToRoom(message, msg);
   }
 
-  if(ischatMessage === true){
+  if (ischatMessage === true) {
     callback([null]);
-  }else{
+  } else {
     callback(true);
   }
-}
+};
 
 
-function sendToRoom(message, msg){
-  var bufferAllows = true; // Todo write some buffer handling for protection and to stop DDoS -- myAuthorId exists in message.
-  if(bufferAllows){
-    setTimeout(function(){ // This is bad..  We have to do it because ACE hasn't redrawn by the time the chat has arrived
-      padMessageHandler.handleCustomObjectMessage(msg, false, function(){
+function sendToRoom(message, msg) {
+  const bufferAllows = true; // Todo write some buffer handling for protection and to stop DDoS -- myAuthorId exists in message.
+  if (bufferAllows) {
+    setTimeout(() => { // This is bad..  We have to do it because ACE hasn't redrawn by the time the chat has arrived
+      padMessageHandler.handleCustomObjectMessage(msg, false, () => {
         // TODO: Error handling.
-      })
+      });
     }
     , 100);
   }
