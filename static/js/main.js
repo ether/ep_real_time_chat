@@ -1,3 +1,5 @@
+'use strict';
+
 exports.postAceInit = function (hook_name, args, cb) {
   let urlContainsRealTimeChatTrue = (getParam('realTimeChat') == 'true'); // if the url param is set
   if (urlContainsRealTimeChatTrue) {
@@ -37,13 +39,13 @@ exports.postAceInit = function (hook_name, args, cb) {
 };
 
 
-exports.getAuthorClassName = function (author) {
+exports.getAuthorClassName = (author) => {
   if (!author) return false;
-  return 'ep_real_time_chat-' + author.replace(/[^a-y0-9]/g, (c)
-  => {
-    if (c == '.') return '-';
-    return `z${  c.charCodeAt(0)  }z`;
+  const authorId = author.replace(/[^a-y0-9]/g, (c) => {
+    if (c === '.') return '-';
+    return `z${c.charCodeAt(0)}z`;
   });
+  return `ep_real_time_chat-${authorId}`;
 };
 
 exports.handleClientMessage_CUSTOM = function (hook, context, cb) {
