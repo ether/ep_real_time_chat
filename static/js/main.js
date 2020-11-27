@@ -1,7 +1,7 @@
 'use strict';
 
 exports.postAceInit = function (hook_name, args, cb) {
-  let urlContainsRealTimeChatTrue = (getParam('realTimeChat') == 'true'); // if the url param is set
+  const urlContainsRealTimeChatTrue = (getParam('realTimeChat') == 'true'); // if the url param is set
   if (urlContainsRealTimeChatTrue) {
     clientVars.realTimeChatOnByDefault = true;
     clientVars.forceRealTimeChat = true;
@@ -17,12 +17,12 @@ exports.postAceInit = function (hook_name, args, cb) {
   if ($('#enableRealTimeChat').length !== 0) return; // don't continue if we're already rendered
   $('#titlelabel').after().append("&nbsp; || &nbsp;<input type=checkbox id='enableRealTimeChat'><label title='Enable / Disable sending real time chat messages' for=enableRealTimeChat>Real Time</label>");
 
-  $('#enableRealTimeChat').click(()=> {
+  $('#enableRealTimeChat').click(() => {
     $('#chatinput').focus();
   });
 
   // Listen for key ups in the chat input box
-  $('body').on('keyup', '#chatinput', ()=> {
+  $('body').on('keyup', '#chatinput', () => {
     if ($('#enableRealTimeChat').is(':checked')) {
       sendChat();
     }
@@ -49,48 +49,46 @@ exports.getAuthorClassName = (author) => {
 };
 
 exports.handleClientMessage_CUSTOM = function (hook, context, cb) {
-  let action = context.payload.action;
-  let padId = context.payload.padId;
-  let authorId = context.payload.authorId;
-  let message = context.payload.message;
+  const action = context.payload.action;
+  const padId = context.payload.padId;
+  const authorId = context.payload.authorId;
+  const message = context.payload.message;
   var authorName = context.payload.authorName;
-  let authorClass = exports.getAuthorClassName(authorId);
+  const authorClass = exports.getAuthorClassName(authorId);
   if (!authorClass) return;
-  let authorClassCSS = authorClass.replace('ep_real_time_chat', "author");
+  const authorClassCSS = authorClass.replace('ep_real_time_chat', 'author');
 
   if (pad.getUserId() === authorId) return false; // Dont process our own caret position (yes we do get it..) -- This is not a bug
 
   if (action === 'recieveChatMessage') { // an author has sent this client a chat message update, we need to show it in the dom
     var authorName = decodeURI(escape(context.payload.authorName));
     if (authorName == 'null') {
-      var authorName = 'Anonymous' // If the users username isn't set then display a smiley face
+      var authorName = 'Anonymous'; // If the users username isn't set then display a smiley face
     }
     $(`#authorChatMessage-${authorClass}`).remove();
-    let chatHtml = $('<p>').attr({
+    const chatHtml = $('<p>').attr({
       class: authorClassCSS,
-      id: `authorChatMessage-${  authorClass}`,
+      id: `authorChatMessage-${authorClass}`,
     }).append(
         $('<b>').text(authorName),
-    ).append(document.createTextNode(`: ${  message  }...`));
+    ).append(document.createTextNode(`: ${message}...`));
     if ($(`#authorChatMessage-${authorClass}`).length === 0) { // if a container doesnt exist for this author yet
       if (message) {
         $('#chattext').append(chatHtml); // create new html
         parent.chat.scrollDown();
       }
+    } else if (message) {
+      $(`#authorChatMessage-${authorClass}`).empty().append(chatHtml); // update html value
+      parent.chat.scrollDown();
     } else {
-      if (message) {
-        $(`#authorChatMessage-${authorClass}`).empty().append(chatHtml); // update html value
-        parent.chat.scrollDown();
-      } else {
-        $(`#authorChatMessage-${authorClass}`).remove();
-      }
+      $(`#authorChatMessage-${authorClass}`).remove();
     }
   }
 };
 
 function sendChat() {
-  let myAuthorId = pad.getUserId();
-  let padId = pad.getPadId();
+  const myAuthorId = pad.getUserId();
+  const padId = pad.getPadId();
   var message = $('#chatinput').val();
   // Send chat message to send to the server
   var message = {
@@ -98,7 +96,7 @@ function sendChat() {
     action: 'sendChatMessage',
     message,
     padId,
-    myAuthorId
+    myAuthorId,
   };
   pad.collabClient.sendMessage(message); // Send the chat position message to the server
 }
