@@ -1,19 +1,29 @@
+'use strict';
+
 /** *
 *
 * Responsible for negotiating messages between two clients
 *
 ****/
 
-const authorManager = require('../../src/node/db/AuthorManager');
-const padMessageHandler = require('../../src/node/handler/PadMessageHandler');
-const async = require('../../src/node_modules/async');
+const authorManager = require('ep_etherpad-lite/node/db/AuthorManager');
+const padMessageHandler = require('ep_etherpad-lite/node/handler/PadMessageHandler');
 
-const buffer = {};
+const sendToRoom = (message, msg) => {
+  // Todo write some buffer handling for protection and to stop DDoS
+  // This is bad..  We have to do it because ACE hasn't redrawn by the time the chat has arrived
+  setTimeout(() => {
+    padMessageHandler.handleCustomObjectMessage(msg, false, () => {
+      // TODO: Error handling.
+    });
+  }
+  , 100);
+};
 
 /*
 * Handle incoming messages from clients
 */
-exports.handleMessage = async function (hook_name, context, callback) {
+exports.handleMessage = async (hookName, context) => {
   // Firstly ignore any request that aren't about chat
   let ischatMessage = false;
   if (context) {
@@ -31,7 +41,6 @@ exports.handleMessage = async function (hook_name, context, callback) {
   }
 
   if (!ischatMessage) {
-    callback(false);
     return false;
   }
 
@@ -64,21 +73,8 @@ exports.handleMessage = async function (hook_name, context, callback) {
   }
 
   if (ischatMessage === true) {
-    callback([null]);
+    return null;
   } else {
-    callback(true);
+    return true;
   }
 };
-
-
-function sendToRoom(message, msg) {
-  const bufferAllows = true; // Todo write some buffer handling for protection and to stop DDoS -- myAuthorId exists in message.
-  if (bufferAllows) {
-    setTimeout(() => { // This is bad..  We have to do it because ACE hasn't redrawn by the time the chat has arrived
-      padMessageHandler.handleCustomObjectMessage(msg, false, () => {
-        // TODO: Error handling.
-      });
-    }
-    , 100);
-  }
-}

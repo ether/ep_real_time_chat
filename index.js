@@ -1,6 +1,8 @@
+'use strict';
+
 const settings = require('ep_etherpad-lite/node/utils/Settings');
 
-exports.clientVars = function (hook, context, callback) {
+exports.clientVars = (hook, context, callback) => {
   let realTimeChatOnByDefault;
   let forceRealTimeChat;
   try {
