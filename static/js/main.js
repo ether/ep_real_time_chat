@@ -75,8 +75,8 @@ exports.handleClientMessage_CUSTOM = (hookName, context, cb) => {
       class: authorClassCSS,
       id: `authorChatMessage-${authorClass}`,
     }).append(
-        $('<b>').text(authorName)
-    ).append(document.createTextNode(`: ${message}...`));
+        $('<b>').text(authorName))
+        .append(document.createTextNode(`: ${message}...`));
     // if a container doesnt exist for this author yet
     if ($(`#authorChatMessage-${authorClass}`).length === 0) {
       if (message) {
