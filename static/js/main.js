@@ -1,6 +1,6 @@
 'use strict';
 
-exports.postAceInit = (hookName, args, cb) => {
+exports.postAceInit = (hookName, context) => {
   // if the url param is set
   const urlContainsRealTimeChatTrue = (getParam('realTimeChat') === 'true');
   if (urlContainsRealTimeChatTrue) {
@@ -52,7 +52,7 @@ exports.getAuthorClassName = (author) => {
   return `ep_real_time_chat-${authorId}`;
 };
 
-exports.handleClientMessage_CUSTOM = (hookName, context, cb) => {
+exports.handleClientMessage_CUSTOM = (hookName, context) => {
   const action = context.payload.action;
   const authorId = context.payload.authorId;
   const message = context.payload.message;
