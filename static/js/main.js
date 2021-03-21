@@ -66,8 +66,7 @@ exports.handleClientMessage_CUSTOM = (hookName, context) => {
 
   // an author has sent this client a chat message update, we need to show it in the dom
   if (action === 'recieveChatMessage') {
-    authorName = decodeURI(escape(context.payload.authorName));
-    if (authorName === 'null') {
+    if (authorName == null) {
       authorName = 'Anonymous'; // If the users username isn't set then display a smiley face
     }
     $(`#authorChatMessage-${authorClass}`).remove();
