@@ -1,7 +1,7 @@
 {
   "name": "ep_real_time_chat",
   "description": "Real time chat updates",
-  "version": "0.2.26",
+  "version": "0.2.27",
   "author": "johnyma22 (John McLear) <john@mclear.co.uk>",
   "repository": {
     "type": "git",
@@ -12,9 +12,9 @@
     "url": "https://etherpad.org/"
   },
   "devDependencies": {
-    "eslint": "^8.57.0",
+    "eslint": "^8.57.1",
     "eslint-config-etherpad": "^4.0.4",
-    "typescript": "^5.4.2"
+    "typescript": "^5.9.3"
   },
   "scripts": {
     "lint": "eslint .",
