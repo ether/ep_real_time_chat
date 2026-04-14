@@ -107,13 +107,13 @@ const sendChat = () => {
 };
 
 const getParam = (sname) => {
-  let params = location.search.substr(location.search.indexOf('?') + 1);
+  let params = location.search.substring(location.search.indexOf('?') + 1);
   let sval = '';
   params = params.split('&');
   // split param and value into individual pieces
   for (let i = 0; i < params.length; i++) {
     const temp = params[i].split('=');
-    if ([temp[0]] === sname) { sval = temp[1]; }
+    if (temp[0] === sname) { sval = temp[1]; }
   }
   return sval;
 };
